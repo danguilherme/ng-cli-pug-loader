@@ -1,0 +1,23 @@
+{
+  "name": "ng-pug-schematics",
+  "version": "0.0.0",
+  "description": "An schematic to add support for .pug files on Angular projects",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && jasmine **/*_spec.js"
+  },
+  "keywords": [
+    "schematics"
+  ],
+  "author": "",
+  "license": "MIT",
+  "schematics": "./src/collection.json",
+  "dependencies": {
+    "@angular-devkit/core": "^0.5.13",
+    "@angular-devkit/schematics": "^0.5.13",
+    "@types/jasmine": "^2.6.0",
+    "@types/node": "^8.0.31",
+    "jasmine": "^2.8.0",
+    "typescript": "^2.5.2"
+  }
+}
