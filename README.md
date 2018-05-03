@@ -1,6 +1,6 @@
-# Getting Started With Schematics
+# Angular CLI Pug Loader
 
-This repository is an Angular CLI Schematic implementation to add a pug files loader for your Angular project.
+Angular CLI Schematic implementation to add `.pug` file support for your Angular project.
 
 ## Usage
 
