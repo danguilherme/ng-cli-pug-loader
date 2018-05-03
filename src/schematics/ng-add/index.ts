@@ -10,15 +10,15 @@ import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks'
 import { addDependencyToPackageJson, addScriptToPackageJson } from '../../utils/package';
 import { throwError } from 'rxjs';
 
-/**
- * Schematics options
- */
-export interface Options { }
-
 const TARGET_CONFIG_PATH = 'node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/webpack-configs/common.js';
 const NG_ADD_PUG_LOADER_SCRIPT_NAME = 'ng-add-pug-loader.js';
 
-export default function ngAdd(_options: Options): Rule {
+/**
+ * Schematics options
+ */
+export interface NgAddOptions { }
+
+export default function ngAdd(_options: NgAddOptions): Rule {
   return chain([
     validateExecution(),
     addLoadersToPackageJson(),
