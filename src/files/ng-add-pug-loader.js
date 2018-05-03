@@ -1,6 +1,6 @@
 /**
  * Adds the pug-loader inside Angular CLI's webpack config, if not there yet.
- * @see https://github.com/danguilherme/ng-add-pug-loader
+ * @see https://github.com/danguilherme/ng-cli-pug-loader
  */
 const fs = require('fs');
 const commonCliConfig = '__COMMON_CLI_CONFIG_PATH__';
