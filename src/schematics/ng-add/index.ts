@@ -6,9 +6,10 @@ import {
   url
 } from '@angular-devkit/schematics';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks'
+import { throwError } from 'rxjs';
 
 import { addDependencyToPackageJson, addScriptToPackageJson } from '../../utils/package';
-import { throwError } from 'rxjs';
+import { pug, applyLoader, pugLoader } from '../../utils/package-versions';
 
 const TARGET_CONFIG_PATH = 'node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/webpack-configs/common.js';
 const NG_ADD_PUG_LOADER_SCRIPT_NAME = 'ng-add-pug-loader.js';
@@ -46,8 +47,9 @@ function validateExecution() {
  */
 function addLoadersToPackageJson() {
   return (host: Tree) => {
-    addDependencyToPackageJson(host, 'devDependencies', 'apply-loader');
-    addDependencyToPackageJson(host, 'devDependencies', 'pug-loader');
+    addDependencyToPackageJson(host, 'devDependencies', 'apply-loader', applyLoader);
+    addDependencyToPackageJson(host, 'devDependencies', 'pug-loader', pugLoader);
+    addDependencyToPackageJson(host, 'devDependencies', 'pug', pug);
     return host;
   };
 }

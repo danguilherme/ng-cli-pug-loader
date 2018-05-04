@@ -23,6 +23,7 @@ describe('ng-add', () => {
 
     expect(packageJson.devDependencies['apply-loader']).toBeDefined();
     expect(packageJson.devDependencies['pug-loader']).toBeDefined();
+    expect(packageJson.devDependencies['pug']).toBeDefined();
     expect(packageJson.scripts['postinstall']).toBeDefined();
   });
 
