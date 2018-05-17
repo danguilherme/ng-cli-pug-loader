@@ -1,11 +1,5 @@
-import {
-  Rule,
-  Tree,
-  SchematicContext,
-  chain,
-  url
-} from '@angular-devkit/schematics';
-import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks'
+import { chain, Rule, SchematicContext, Tree, url } from '@angular-devkit/schematics';
+import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { throwError } from 'rxjs';
 
 import { addDependencyToPackageJson, addScriptToPackageJson } from '../../utils/package';
@@ -83,7 +77,7 @@ function addPugRule() {
  */
 function addPostInstallScript() {
   return (host: Tree) => {
-    addScriptToPackageJson(host, 'postinstall', `node ./${NG_ADD_PUG_LOADER_SCRIPT_NAME}`);
+    addScriptToPackageJson(host, 'postinstall', `node ./bin/${NG_ADD_PUG_LOADER_SCRIPT_NAME}`);
     return host;
   };
 }
@@ -102,7 +96,7 @@ function addScriptToProject() {
       PUG_RULE: getPugLoaderRule()
     });
 
-    tree.create(NG_ADD_PUG_LOADER_SCRIPT_NAME, modifiedContent);
+    tree.create(`bin/${NG_ADD_PUG_LOADER_SCRIPT_NAME}`, modifiedContent);
   }
 }
 

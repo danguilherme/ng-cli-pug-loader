@@ -1,9 +1,10 @@
-import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
-import { getFileContent } from '@schematics/angular/utility/test';
 import * as path from 'path';
+import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/testing';
+import { NodePackageTaskOptions } from '@angular-devkit/schematics/tasks/node-package/options';
+import { getFileContent } from '@schematics/angular/utility/test';
 
 import { createTestApp, createCommonWebpackConfig } from '../../utils/testing';
-import { NgAddOptions } from '.';
+import { NgAddOptions } from './';
 
 describe('ng-add', () => {
   let runner: SchematicTestRunner;
@@ -36,23 +37,27 @@ describe('ng-add', () => {
     expect(config.rules.length).toBe(2);
     expect(pugRule.test.toString()).toBe(/.pug$/.toString());
     expect(pugRule.use.length).toBe(2);
+
     const loaders = pugRule.use.map((loader: any) => loader.loader);
     expect(loaders).toContain('apply-loader');
     expect(loaders).toContain('pug-loader');
   });
 
-  it('should add script file to root', () => {
+  it('should add script file to ./bin', () => {
     const tree = runner.runSchematic('ng-add', defaultOptions, appTree);
-    expect(tree.read('/ng-add-pug-loader.js')).toBeDefined();
+    expect(tree.read('/bin/ng-add-pug-loader.js')).toBeTruthy();
   });
 
   it('should register npm install task', () => {
     runner.runSchematic('ng-add', defaultOptions, appTree);
-    const npmInstallTask = runner.tasks[0];
 
-    expect(npmInstallTask).toBeDefined();
     expect(runner.tasks.length).toBe(1);
-    expect(npmInstallTask.name).toBe('node-package');
-    expect((npmInstallTask.options as any).command).toBe('install');
+
+    const npmInstallTask = runner.tasks.filter(t => t.name === 'node-package')[0];
+    expect(npmInstallTask).toBeDefined();
+
+    const options = npmInstallTask.options as NodePackageTaskOptions;
+    expect(options.command).toBe('install');
+    expect(options.packageName).toBeTruthy();
   });
 });
