@@ -27,17 +27,30 @@ describe('ng-add', () => {
     expect(packageJson.scripts['postinstall']).toBeDefined();
   });
 
-  it('should add the pug loader in webpack config', () => {
+  it('should add the apply and pug loaders in webpack config', () => {
     const tree = runner.runSchematic('ng-add', defaultOptions, appTree);
     const config = eval(getFileContent(tree,
       'node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/webpack-configs/common.js'));
-    const pugRule = config.rules[0];
+    const pugRules = config.rules[0];
 
-    expect(config.rules.length).toBe(2);
-    expect(pugRule.test.toString()).toBe(/.pug$/.toString());
-    expect(pugRule.use.length).toBe(2);
-    const loaders = pugRule.use.map((loader: any) => loader.loader);
+    expect(config.rules.length).toBe(3);
+    expect(pugRules.test.toString()).toBe(/\.(pug|jade)$/.toString());
+    expect(pugRules.use.length).toBe(2);
+    const loaders = pugRules.use.map((loader: any) => loader.loader);
     expect(loaders).toContain('apply-loader');
+    expect(loaders).toContain('pug-loader');
+  });
+
+  it('should add the pug loader only for include/partial files in webpack config', () => {
+    const tree = runner.runSchematic('ng-add', defaultOptions, appTree);
+    const config = eval(getFileContent(tree,
+      'node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/webpack-configs/common.js'));
+    const pugRules = config.rules[1];
+
+    expect(config.rules.length).toBe(3);
+    expect(pugRules.test.toString()).toBe(/\.(include|partial)\.(pug|jade)$/.toString());
+    expect(pugRules.use.length).toBe(1);
+    const loaders = pugRules.use.map((loader: any) => loader.loader);
     expect(loaders).toContain('pug-loader');
   });
 
