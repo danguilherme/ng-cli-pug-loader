@@ -135,18 +135,18 @@ function replaceVars(content: string, variables: { [key: string]: string }) {
 }
 
 function getPugLoaderRules(): string {
+  const partialRegex = /\.(include|partial)\.(pug|jade)$/;
   return `
     {
       test: /\\.(pug|jade)$/,
+      exclude: ${partialRegex},
       use: [
         { loader: 'apply-loader' },
         { loader: 'pug-loader' }
       ]
     },
     {
-      test: /\\.(include|partial)\\.(pug|jade)$/,
-      use: [
-        { loader: 'pug-loader' }
-      ]
+      test: ${partialRegex},
+      loader: 'pug-loader'
     },`.replace(/\s+/gm, ' ');
 }
