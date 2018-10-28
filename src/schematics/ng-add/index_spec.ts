@@ -6,7 +6,6 @@ import { createTestApp, createCommonWebpackConfig } from '../../utils/testing';
 import { NgAddOptions } from '.';
 
 describe('ng-add', () => {
-  const TARGET_CONFIG_PATH = 'node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/webpack-configs/common.js';
   let runner: SchematicTestRunner;
   let appTree: UnitTestTree;
 
@@ -28,34 +27,18 @@ describe('ng-add', () => {
     expect(packageJson.scripts['postinstall']).toBeDefined();
   });
 
-  it('should add 2 new pug rules', () => {
-    const oldConfig = eval(getFileContent(appTree, TARGET_CONFIG_PATH));
+  it('should add the pug loader in webpack config', () => {
     const tree = runner.runSchematic('ng-add', defaultOptions, appTree);
-    const config = eval(getFileContent(tree, TARGET_CONFIG_PATH));
-
-    expect(config.rules.length - oldConfig.rules.length).toBe(2);
-  });
-
-  it('should add the apply and pug loaders in webpack config', () => {
-    const tree = runner.runSchematic('ng-add', defaultOptions, appTree);
-    const config = eval(getFileContent(tree, TARGET_CONFIG_PATH));
+    const config = eval(getFileContent(tree,
+      'node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/webpack-configs/common.js'));
     const pugRule = config.rules[0];
 
-    expect(pugRule.test.toString()).toBe(/\.(pug|jade)$/.toString());
-    expect(pugRule.exclude.toString()).toBe(/\.(include|partial)\.(pug|jade)$/.toString());
+    expect(config.rules.length).toBe(2);
+    expect(pugRule.test.toString()).toBe(/.pug$/.toString());
     expect(pugRule.use.length).toBe(2);
     const loaders = pugRule.use.map((loader: any) => loader.loader);
     expect(loaders).toContain('apply-loader');
     expect(loaders).toContain('pug-loader');
-  });
-
-  it('should add the pug loader only for include/partial files in webpack config', () => {
-    const tree = runner.runSchematic('ng-add', defaultOptions, appTree);
-    const config = eval(getFileContent(tree, TARGET_CONFIG_PATH));
-    const partialPugRule = config.rules[1];
-
-    expect(partialPugRule.test.toString()).toBe(/\.(include|partial)\.(pug|jade)$/.toString());
-    expect(partialPugRule.loader).toBe('pug-loader');
   });
 
   it('should add script file to root', () => {
