@@ -25,22 +25,6 @@ export class AppComponent {
 }
 ```
 
-### Pug Includes Usage
-Because of [pug include](https://pugjs.org/language/includes.html) templates don't work with `apply-loader` (see [related issue](https://github.com/pugjs/pug-loader/issues/105)) we have supported it for `*.partial.pug` and `*.include.pug` files.
-
-Imagine you have `mixins.pug` and `example.partial.pug` for example.
-
-```pug
-//- apply-loader and pug-loader will be used
-include mixins
-//- apply-loader and pug-loader will be used
-include mixins.pug
-//- pug-loader only will be used
-include example.partial.pug
-//- pug-loader only will be used
-include example.include.pug
-```
-
 ## Development
 
 ### Unit Testing

@@ -23,7 +23,7 @@ export default function ngAdd(_options: NgAddOptions): Rule {
   return chain([
     validateExecution(),
     addLoadersToPackageJson(),
-    addPugRules(),
+    addPugRule(),
     addPostInstallScript(),
     addScriptToProject(),
     addPackageInstallTask(),
@@ -58,21 +58,21 @@ function addLoadersToPackageJson() {
  * Inserts the additional Pug rule into CLI's webpack,
  * inside node_modules folder.
  */
-function addPugRules() {
+function addPugRule() {
   return (tree: Tree) => {
     const configFile = tree.read(TARGET_CONFIG_PATH);
     if (!configFile)
       return throwError(new Error(`CLI's Webpack config was not found. Try running \`npm install\` before running this tool.`));
 
     const configText = configFile.toString('utf-8');
-    const strPugRules = getPugLoaderRules();
+    const strPugRule = getPugLoaderRule();
 
     // make sure we don't add the rule if it already exists
-    if (configText.indexOf(strPugRules) > -1) { return; }
+    if (configText.indexOf(strPugRule) > -1) { return; }
 
     // We made it this far, let's insert that pug webpack rule
     const position = configText.indexOf('rules: [') + 8;
-    const output = [configText.slice(0, position), `\n${strPugRules}`, configText.slice(position)].join('');
+    const output = [configText.slice(0, position), `\n${strPugRule}`, configText.slice(position)].join('');
 
     tree.overwrite(TARGET_CONFIG_PATH, output);
   }
@@ -99,7 +99,7 @@ function addScriptToProject() {
 
     const modifiedContent = replaceVars(scriptContent, {
       COMMON_CLI_CONFIG_PATH: TARGET_CONFIG_PATH,
-      PUG_RULES: getPugLoaderRules()
+      PUG_RULE: getPugLoaderRule()
     });
 
     tree.create(NG_ADD_PUG_LOADER_SCRIPT_NAME, modifiedContent);
@@ -134,19 +134,12 @@ function replaceVars(content: string, variables: { [key: string]: string }) {
   return content;
 }
 
-function getPugLoaderRules(): string {
-  const partialRegex = /\.(include|partial)\.(pug|jade)$/;
-  return `
-    {
-      test: /\\.(pug|jade)$/,
-      exclude: ${partialRegex},
-      use: [
-        { loader: 'apply-loader' },
-        { loader: 'pug-loader' }
-      ]
-    },
-    {
-      test: ${partialRegex},
-      loader: 'pug-loader'
-    },`.replace(/\s+/gm, ' ');
+function getPugLoaderRule(): string {
+  return `{
+    test: /.pug$/,
+    use: [
+      { loader: "apply-loader" },
+      { loader: "pug-loader" }
+    ]
+  },`.replace(/\s+/gm, ' ');
 }
