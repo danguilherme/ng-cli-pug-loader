@@ -4,19 +4,18 @@
  */
 const fs = require('fs');
 const commonCliConfig = '__COMMON_CLI_CONFIG_PATH__';
-const pugRule = '__PUG_RULE__';
+const pugRules = '__PUG_RULES__';
 
 fs.readFile(commonCliConfig, (err, data) => {
   if (err) throw err;
 
   const configText = data.toString();
   // make sure we don't add the rule if it already exists
-  if (configText.indexOf(pugRule) > -1) return;
+  if (configText.indexOf(pugRules) > -1) { return; }
 
   // Insert the pug webpack rule
   const position = configText.indexOf('rules: [') + 8;
-  const output = [configText.slice(0, position), pugRule, configText.slice(position)].join('');
-  
+  const output = [configText.slice(0, position), pugRules, configText.slice(position)].join('');
   const file = fs.openSync(commonCliConfig, 'r+');
   fs.writeFile(file, output, error => {
     if (error)
