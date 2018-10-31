@@ -4,7 +4,7 @@
  */
 const fs = require('fs');
 const commonCliConfig = '__COMMON_CLI_CONFIG_PATH__';
-const pugRules = '__PUG_RULES__';
+const pugRules = `__PUG_RULES__`;
 
 fs.readFile(commonCliConfig, (err, data) => {
   if (err) throw err;

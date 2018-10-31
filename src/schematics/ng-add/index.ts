@@ -148,5 +148,7 @@ function getPugLoaderRules(): string {
     {
       test: ${partialRegex},
       loader: 'pug-loader'
-    },`.replace(/\s+/gm, ' ');
+    },`
+      .replace(/\s+/gm, ' ')
+      .replace(/^\s/, '');
 }
