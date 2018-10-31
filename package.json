@@ -1,6 +1,6 @@
 {
   "name": "ng-cli-pug-loader",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "An schematic to add support for .pug files on Angular projects",
   "scripts": {
     "build": "tsc -p tsconfig.json",
