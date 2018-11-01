@@ -141,12 +141,12 @@ function getPugLoaderRules(): string {
       test: /\\.(pug|jade)$/,
       exclude: ${partialRegex},
       use: [
-        { loader: 'apply-loader' },
-        { loader: 'pug-loader' }
+        { loader: "apply-loader" },
+        { loader: "pug-loader" }
       ]
     },
     {
       test: ${partialRegex},
-      loader: 'pug-loader'
+      loader: "pug-loader"
     },`.replace(/\s+/gm, ' ');
 }
