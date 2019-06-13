@@ -79,11 +79,15 @@ function addPugRules() {
 
     tree.overwrite(TARGET_COMMON_CONFIG_PATH, commonOutput);
 
-    // now we update the typescript config file to turn off direct template loading
+    // now we update the typescript config file for Angular8 to turn off direct template loading  
     const typescriptConfigText = typescriptConfigFile.toString('utf-8');
-    if (typescriptConfigText.indexOf('directTemplateLoading: false,') > -1) { return; }
+
+    // if directTemplateLoading not present (Angular 6) no change needed, if Angular 8 and already set to false, no change needed
+    if (typescriptConfigText.indexOf('directTemplateLoading') === -1 || typescriptConfigText.indexOf('directTemplateLoading: false,') > -1) { return; }
+
+    // change needed, make and write it
     const typescriptOutput = typescriptConfigText.replace('directTemplateLoading: true,', 'directTemplateLoading: false,');
-    tree.overwrite(TARGET_COMMON_CONFIG_PATH, typescriptOutput)
+    tree.overwrite(TARGET_TYPESCRIPT_CONFIG_PATH, typescriptOutput)
   }
 }
 
