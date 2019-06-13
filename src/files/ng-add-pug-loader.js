@@ -35,6 +35,9 @@ fs.readFile(typescriptCliConfig, (err, data) => {
   if (err) { throw err; }
 
   const typescriptText = data.toString();
+
+  // check if needed to be set or already set
+  if (typescriptText.indexOf('directTemplateLoading') === -1 || typescriptText.indexOf('directTemplateLoading: false,') > -1) { return; }
   
   // update the setting
   const output = typescriptText.replace('directTemplateLoading: true,', 'directTemplateLoading: false,');
@@ -48,4 +51,3 @@ fs.readFile(typescriptCliConfig, (err, data) => {
     fs.close(file2, () => {});
   });
 });
-

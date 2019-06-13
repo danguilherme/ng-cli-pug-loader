@@ -2,13 +2,13 @@ import { SchematicTestRunner, UnitTestTree } from '@angular-devkit/schematics/te
 import { getFileContent } from '@schematics/angular/utility/test';
 import * as path from 'path';
 
-import { createTestApp, createCommonWebpackConfigForAngular6or7, createCommonWebpackConfigForAngular8 } from '../../utils/testing';
+import { createTestApp, createCommonWebpackConfigForAngular6, createCommonWebpackConfigForAngular7orGreater } from '../../utils/testing';
 import { NgAddOptions } from '.';
 
 const TARGET_COMMON_CONFIG_PATH = 'node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/webpack-configs/common.js';
 const TARGET_TYPESCRIPT_CONFIG_PATH = 'node_modules/@angular-devkit/build-angular/src/angular-cli-files/models/webpack-configs/typescript.js';
 
-describe('ng-add-angular-6or7', () => {
+describe('ng-add-angular-6', () => {
 
   let runner: SchematicTestRunner;
   let appTree: UnitTestTree;
@@ -17,7 +17,7 @@ describe('ng-add-angular-6or7', () => {
 
   beforeEach(() => {
     appTree = createTestApp();
-    createCommonWebpackConfigForAngular6or7(appTree);
+    createCommonWebpackConfigForAngular6(appTree);
     runner = new SchematicTestRunner('schematics', path.join(__dirname, '../collection.json'));
   });
 
@@ -85,7 +85,7 @@ describe('ng-add-angular-6or7', () => {
 });
 
 
-describe('ng-add-angular8-specific', () => {
+describe('ng-add-angular-7-or-greater-specific', () => {
   let runner: SchematicTestRunner;
   let appTree: UnitTestTree;
 
@@ -93,11 +93,11 @@ describe('ng-add-angular8-specific', () => {
 
   beforeEach(() => {
     appTree = createTestApp();
-    createCommonWebpackConfigForAngular8(appTree);
+    createCommonWebpackConfigForAngular7orGreater(appTree);
     runner = new SchematicTestRunner('schematics', path.join(__dirname, '../collection.json'));
   });
 
-  it('sthe typescript.js file in webpack config should have directTemplateLoading: false', () => {
+  it('the typescript.js file in webpack config should have directTemplateLoading: false', () => {
     const tree = runner.runSchematic('ng-add', defaultOptions, appTree);
     const newTypescriptConfig = getFileContent(tree, TARGET_TYPESCRIPT_CONFIG_PATH);
     expect(newTypescriptConfig).toContain('directTemplateLoading: false');
