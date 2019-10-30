@@ -16,13 +16,13 @@
   "schematics": "./src/schematics/collection.json",
   "dependencies": {
     "@angular-devkit/core": "^0.5.13",
-    "@angular-devkit/schematics": "^0.5.13",
+    "@angular-devkit/schematics": "^0.5.13"
+  },
+  "devDependencies": {
+    "@schematics/angular": "^0.5.13",
     "@types/jasmine": "^2.6.0",
     "@types/node": "^8.0.31",
     "jasmine": "^2.8.0",
     "typescript": "^2.5.2"
-  },
-  "devDependencies": {
-    "@schematics/angular": "^0.5.13"
   }
 }
