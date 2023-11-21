@@ -1,3 +1,7 @@
+> ⚠️ This project is no longer maintained. ⚠️
+> 
+> Check out [ngx-pug-builders](https://github.com/lekhmanrus/ngx-pug-builders) to add support to pug files to your Angular project.
+
 # Angular CLI Pug Loader
 
 Angular CLI Schematic implementation to add `.pug` file support for your Angular project.
